@@ -1,0 +1,19 @@
+.gamestat {
+    display: flex;
+    gap: 9px;
+}
+.ResetB {
+    position: relative;
+    top: 400px;
+    height: 25px;
+
+}
+.FMB {
+    display: flex;
+}
+.MB {
+    margin: 15px;
+}
+.RB {
+    margin: 15px;
+}
