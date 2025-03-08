@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RESETLAYER GAME</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="gamestat">
+        <div>STATS:</div>
+        <div class="cash" id="cash">Cash: 0</div>
+        <div class="multi" id="multi">Multi: 0</div>
+        <div class="reb" id="reb">Rebirth: 0</div>
+        <div class="ultreb" id="ultreb">Ult-Reb: 0</div>
+        <div id="pres" class="pres">Prestige: 0</div>
+        <div id="ultpres" class="ultpres">Ult-Pres: 0</div>
+        <div id="asc" class="asc">Ascend: 0</div>
+        <div id="trans" class="trans">Transcend: 0</div>
+        <div id="awk" class="awk">Awakening: 0</div>
+        <div id="tawak" class="tawak">True-Awakening: 0</div>
+        <div id="tg" class="tg">Touch-Grass: 0</div>
+</div>
+<div class="FMB">
+<div><button class="MB" onclick="incrementmulti()"><div id="mpend" > Req: 150 Cash (resets Cash) Multi: 0</div></button></div>
+<div><button class="RB" onclick="incrementrebirth()"><div id="rpend" > Req: 1000 Multi (resets below) Rebirth: 0</div></button></div>
+<div><button class="MB" onclick="incrementultreb()"><div id="urpend" > Req: 4500 Reb (resets below) Ultra-Reb: 0</div></button></div>
+<div><button class="RB" onclick="incrementpres()"><div id="ppend" > Req: 100 Ult-Reb (resets below) Prestige: 0</div></button></div>
+<div><button class="RB" onclick="incrementultpres()"><div id="uppend" > Req: 50 Prestige (resets below) Ultra-Pres: 0</div></button></div>
+</div>
+<div><button  class="ResetB" onclick="reset()"><div> Restart the gamedata</div></button></div>
+<script>
+let gamestat = JSON.parse(localStorage.getItem('gamestat')) || {
+    cv: 1,
+    mv: 0,
+    rv: 1000,
+    urv: 0,
+    pv: 0,
+    upv: 0
+};
+
+function updui() {
+    document.getElementById('cash').innerText = "Cash: " + gamestat.cv.toFixed(1)
+            document.getElementById('multi').innerText = "Multi: " + gamestat.mv.toFixed(1);
+            document.getElementById('reb').innerText = "Rebirth: " + gamestat.rv.toFixed(1);
+            document.getElementById('ultreb').innerText = "U-Reb: " + gamestat.urv.toFixed(1);
+            document.getElementById('pres').innerText = "Prestige: " + gamestat.pv.toFixed(1);
+            document.getElementById('ultpres').innerText = "U-Pres: " + gamestat.upv.toFixed(1);
+}
+
+function incrementCash() {
+    gamestat.cv +=0.4*(1+gamestat.mv)*((5+gamestat.rv)/5)
+    localStorage.setItem('gamestat', JSON.stringify(gamestat)); 
+    updui(); 
+}
+
+function incrementmulti() {
+    if (gamestat.cv > 150) { 
+    gamestat.mv +=Math.pow(gamestat.cv,0.333)*(1+(gamestat.rv*1.2))/4
+    gamestat.cv -= gamestat.cv
+    localStorage.setItem('gamestat', JSON.stringify(gamestat)); 
+    updui(); 
+}};
+function incrementrebirth() {
+    if (gamestat.mv > 1000) { 
+    gamestat.rv +=((Math.pow(gamestat.mv,0.9)/500)/((1000000+gamestat.mv)/1000000))
+    gamestat.cv -= gamestat.cv
+    gamestat.mv -= gamestat.mv
+    localStorage.setItem('gamestat', JSON.stringify(gamestat)); 
+    updui(); 
+}};
+
+function pendC() {
+    document.getElementById('mpend').innerText = "Req: 150 Cash (resets Cash) Multi: "+(Math.pow(gamestat.cv,0.333)*(1+gamestat.rv)/4).toFixed(1)
+    document.getElementById('rpend').innerText = "Req: 1000 Multi (resets below) Rebirth: "+((Math.pow(gamestat.mv,0.9)/500)/((1000000+gamestat.mv)/1000000)).toFixed(1)
+};
+
+function SIgroup() {
+    pendC()
+    incrementCash()
+    localStorage.setItem('gamestat', JSON.stringify(gamestat)); 
+    updui();
+}
+
+updui();
+
+window.onload = function() {
+    updui();
+    setInterval(SIgroup, 75);
+};
+
+function reset() {
+    localStorage.removeItem("gamestat");
+    location.reload();
+    
+}
+
+</script>
+</body>
+</html>
