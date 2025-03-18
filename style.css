@@ -1,12 +1,7 @@
 .gamestat {
+
     display: flex;
     gap: 9px;
-}
-.ResetB {
-    position: relative;
-    top: 400px;
-    height: 25px;
-
 }
 .FMB {
     display: flex;
@@ -16,4 +11,13 @@
 }
 .RB {
     margin: 15px;
+}
+
+body {
+    user-select: none;
+    -webkit-user-drag: none;
+}
+.all {
+    gap: 23px;
+    display: flex;
 }
